@@ -48,13 +48,13 @@ TodoReact> npm start
 1. Create a new FeatherHttp application and add the necessary packages in the `TodoApi` folder
 
 ```
-Tutorial>dotnet new feather -n TodoApi
+Tutorial> dotnet new feather -n TodoApi
 Tutorial> cd TodoApi
 TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory
 ```
    - The commands above
-     - create a new FeatherHttp application `dotnet new feather -n TodoApi`
-     - Adds the NuGet packages  required in the next section `dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 5.0.0-preview.7.20365.15`
+     - Create a new FeatherHttp application (`dotnet new feather -n TodoApi`)
+     - Adds the NuGet packages  required in the next section (`dotnet add package Microsoft.EntityFrameworkCore.InMemory`)
 
 2.  Open the `TodoApi` Folder in editor of your choice.
 
@@ -120,7 +120,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory
         using var db = new TodoDbContext();
         var todos = await db.Todos.ToListAsync();
 
-        await http.Response.WriteJsonAsync(todos);
+        await http.Response.WriteAsJsonAsync(todos);
     }
     ```
 
