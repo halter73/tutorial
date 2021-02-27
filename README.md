@@ -8,14 +8,15 @@
 
 # Prerequisites
 
-1. Install [.NET Core  5.0](https://dotnet.microsoft.com/download)
+!!! REVIEW: This installer page is far scarier than https://dotnet.microsoft.com/download. How do we deal with this?
+1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/v6.0.100-preview.1.21103.13#installers-and-binaries)
 1. Install [Node.js](https://nodejs.org/en/)
 
 # Setup
 
 1. Install the FeatherHttp template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
     ```
-    dotnet new -i FeatherHttp.Templates::0.1.67-alpha.g69b43bed72 --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
+    dotnet new -i FeatherHttp.Templates::0.1.81-alpha.ge556685134 --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
     ```
     This will make the `FeatherHttp` templates available in the `dotnet new` command (more below).
 
