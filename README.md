@@ -105,37 +105,42 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory
 
 1. Add the appropriate `usings` to the top of the `Program.cs` file.
     ```
+    using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     ```
     This will import the required namespaces so that the application compiles successfully.
 
-1. In `Program.cs`, create a method called `GetTodos` inside of the `Program` class:
+1. Above `await app.RunAsync();`, create a method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
-    static async Task GetTodos(HttpContext http)
+    [HttpGet("/api/todos")]
+    async Task<List<TodoItem>> GetTodos()
     {
         using var db = new TodoDbContext();
-        var todos = await db.Todos.ToListAsync();
-
-        await http.Response.WriteAsJsonAsync(todos);
+        return await db.Todos.ToListAsync();
     }
     ```
 
     This method gets the list of todo items from the database and writes a JSON representation to the HTTP response.
     
-1. Wire up `GetTodos` to the `api/todos` route by modifying the code in `Main` to the following:
+1. Wire up `GetTodos` to the `api/todos` route by modifying the code so we get the following as the body of our program:
     ```C#
-    static async Task Main(string[] args)
+    var app = WebApplication.Create(args);
+
+    [HttpGet("/api/todos")]
+    async Task<List<TodoItem>> GetTodos()
     {
-        var app = WebApplication.Create(args);
-
-        app.MapGet("/api/todos", GetTodos);
-
-        await app.RunAsync();
+        using var db = new TodoDbContext();
+        return await db.Todos.ToListAsync();
     }
+
+    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
+
+    await app.RunAsync();
     ```
 1. Navigate to the URL http://localhost:5000/api/todos in the browser. It should return an empty JSON array.
 
