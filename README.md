@@ -9,7 +9,7 @@
 # Prerequisites
 
 !!! REVIEW: This installer page is far scarier than https://dotnet.microsoft.com/download. How do we deal with this?
-1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/v6.0.100-preview.1.21103.13#installers-and-binaries)
+1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/4238b45156dad3c9a64a465d7e3aab2c037200d5#installers-and-binaries)
 1. Install [Node.js](https://nodejs.org/en/)
 
 # Setup
