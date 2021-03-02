@@ -223,46 +223,37 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 
 ## Deleting a todo item
 
-1. In `Program.cs` create another method called `DeleteTodo` inside of the `Program` class:
-    ```C#
-    static async Task DeleteTodo(HttpContext http)
-    {
-        if (!http.Request.RouteValues.TryGet("id", out int id))
-        {
-            http.Response.StatusCode = 400;
-            return;
-        }
+1. In `Program.cs` create another local method called `DeleteTodo`:
 
+    ```C#
+    [HttpDelete("/api/todos/{id}")]
+    async Task<StatusCodeResult> DeleteTodo([FromRoute] int id)
+    {
         using var db = new TodoDbContext();
         var todo = await db.Todos.FindAsync(id);
-        if (todo == null)
+
+        if (todo is null)
         {
-            http.Response.StatusCode = 404;
-            return;
+            return new StatusCodeResult(404);
         }
 
         db.Todos.Remove(todo);
         await db.SaveChangesAsync();
 
-        http.Response.StatusCode = 204;
+        return new StatusCodeResult(204);
     }
     ```
 
     The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it.
 
-1. Wire up `DeleteTodo` to the `api/todos/{id}` route by modifying the code in `Main` to the following:
+1. Wire up `DeleteTodo` by modifying the code in `Program.cs` to the following:
     ```C#
-    static async Task Main(string[] args)
-    {
-        var app = WebApplication.Create(args);
+    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
+    app.MapAction((Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
+    app.MapAction((Func<int, Task<StatusCodeResult>>)DeleteTodo);
 
-        app.MapGet("/api/todos", GetTodos);
-        app.MapPost("/api/todos", CreateTodo);
-        app.MapPost("/api/todos/{id}", UpdateCompleted);
-        app.MapDelete("/api/todos/{id}", DeleteTodo);
-
-        await app.RunAsync();
-    }
+    await app.RunAsync()
     ```
 
 ## Test the application
