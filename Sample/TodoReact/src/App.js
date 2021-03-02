@@ -14,6 +14,9 @@ function App() {
     e.preventDefault();
     await fetch('/api/todos', {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ name: newTodo })
     });
     setNewTodo("");
@@ -23,6 +26,9 @@ function App() {
   async function updateCompleted(todo, isComplete) {
     await fetch(`/api/todos/${todo.id}`, {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ ...todo, isComplete: isComplete })
     });
     await getTodos();

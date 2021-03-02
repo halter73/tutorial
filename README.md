@@ -154,35 +154,32 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 
 ## Adding a new todo item
 
-1. In `Program.cs`, create another method called `CreateTodo` inside of the `Program` class:
-    ```C#
-    static async Task CreateTodo(HttpContext http)
-    {
-        var todo = await http.Request.ReadJsonAsync<TodoItem>();
+1. In `Program.cs`, create another local method called `CreateTodo` inside of the `Program` class:
 
+    ```C#
+    [HttpPost("/api/todos")]
+    async Task<StatusCodeResult> CreateTodo([FromBody] TodoItem todo)
+    {
         using var db = new TodoDbContext();
         await db.Todos.AddAsync(todo);
         await db.SaveChangesAsync();
 
-        http.Response.StatusCode = 204;
+        return new StatusCodeResult(204);
     }
     ```
 
-    The above method reads the `TodoItem` from the incoming HTTP request and as a JSON payload and adds
-    it to the database.
+    The above method reads the `TodoItem` from the incoming HTTP request and adds it to the database.`[HttpPost("/api/todos")]` indicates this method should be called for `POST` requests made to `/api/todos`. `[FromBody]` indicates the `todo` parameter should be read from the request body as JSON.
+
+    Once the changes are saved, the method responds with the successful `204` HTTP status code and an empty response body.
 
 1. Wire up `CreateTodo` to the `api/todos` route by modifying the code in `Main` to the following:
     ```C#
-    static async Task Main(string[] args)
-    {
-        var app = WebApplication.Create(args);
+    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
 
-        app.MapGet("/api/todos", GetTodos);
-        app.MapPost("/api/todos", CreateTodo);
-
-        await app.RunAsync();
-    }
+    await app.RunAsync();
     ```
+
 1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. The application should be able to add new todo items. Also, refreshing the page should show the stored todo items.
 ![image](https://user-images.githubusercontent.com/2546640/75119637-bc056a80-5652-11ea-81c8-71ea13d97a3c.png)
 
