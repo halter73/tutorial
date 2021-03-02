@@ -244,7 +244,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it.
+    The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it. `[HttpDelete("/api/todos/{id}")]` indicates this method will be called for `DELETE` requests made to `/api/todos/<SOME_INT>`.
 
 1. Wire up `DeleteTodo` by modifying the code in `Program.cs` to the following:
     ```C#
