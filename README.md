@@ -117,7 +117,8 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 ## Expose the list of todo items
 
 1. Add the appropriate `usings` to the top of the `Program.cs` file.
-    ```
+
+    ```C#
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -125,9 +126,10 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     ```
+
     This will import the required namespaces so that the application compiles successfully.
 
-1. Above `await app.RunAsync();`, create a method called `GetTodos` inside of the `Program.cs` file:
+1. Above `await app.RunAsync();`, create a local method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
     [HttpGet("/api/todos")]
@@ -138,23 +140,14 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    This method gets the list of todo items from the database and writes a JSON representation to the HTTP response.
+    This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response. `[HttpGet("/api/todos")]` indicates this method should be called for `GET` requests made to `/api/todos`.
     
-1. Wire up `GetTodos` to the `api/todos` route by modifying the code so we get the following as the body of our program:
+1. Wire up `GetTodos` by calling `MapAction` with the `GetTodos` method before calling `await app.RunAsync();`:
+
     ```C#
-    var app = WebApplication.Create(args);
-
-    [HttpGet("/api/todos")]
-    async Task<List<TodoItem>> GetTodos()
-    {
-        using var db = new TodoDbContext();
-        return await db.Todos.ToListAsync();
-    }
-
     app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
-
-    await app.RunAsync();
     ```
+
 1. Navigate to the URL http://localhost:5000/api/todos in the browser. It should return an empty JSON array.
 
     <img src="https://user-images.githubusercontent.com/2546640/75116317-1a235500-5635-11ea-9a73-e6fc30639865.png" alt="empty json array" style="text-align:center" width =70% />
