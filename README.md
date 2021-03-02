@@ -16,7 +16,7 @@
 
 1. Install the FeatherHttp template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
     ```
-    dotnet new -i FeatherHttp.Templates::0.1.81-alpha.ge556685134 --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
+    dotnet new -i FeatherHttp.Templates::0.1.*-* --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
     ```
     This will make the `FeatherHttp` templates available in the `dotnet new` command (more below).
 
@@ -45,18 +45,31 @@ TodoReact> npm start
 ### Build backend - FeatherHttp
 **Create a new project**
 
-1. Create a new FeatherHttp application and add the necessary packages in the `TodoApi` folder
+1. Create a new FeatherHttp application and add the necessary packages in the `TodoApi` folder.
 
 ```
 Tutorial> dotnet new feather -n TodoApi
-Tutorial> cd TodoApi
-TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory
 ```
-   - The commands above
-     - Create a new FeatherHttp application (`dotnet new feather -n TodoApi`)
-     - Adds the NuGet packages  required in the next section (`dotnet add package Microsoft.EntityFrameworkCore.InMemory`)
 
-2.  Open the `TodoApi` Folder in editor of your choice.
+2. Open the `TodoApi` Folder in the editor of your choice.
+
+3. Open `TodoApi.csproj` in the editor and add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources`.
+
+```xml
+<RestoreSources>
+    $(RestoreSources);
+    https://api.nuget.org/v3/index.json;
+    https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;
+    https://f.feedz.io/featherhttp/framework/nuget/index.json
+</RestoreSources>
+```
+
+4. Add a preview NuGet package (`Microsoft.EntityFrameworkCore.InMemory`) required in the next section.
+
+```
+Tutorial> cd TodoApi
+TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
+```
 
 ## Create the database model
 
