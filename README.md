@@ -140,7 +140,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response. `[HttpGet("/api/todos")]` indicates this method should be called for `GET` requests made to `/api/todos`.
+    This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response. `[HttpGet("/api/todos")]` indicates this method will be called for `GET` requests made to `/api/todos`.
     
 1. Wire up `GetTodos` by calling `MapAction` with the `GetTodos` method before calling `await app.RunAsync();`:
 
@@ -168,7 +168,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    The above method reads the `TodoItem` from the incoming HTTP request and adds it to the database.`[HttpPost("/api/todos")]` indicates this method should be called for `POST` requests made to `/api/todos`. `[FromBody]` indicates the `todo` parameter should be read from the request body as JSON.
+    The above method reads the `TodoItem` from the incoming HTTP request and adds it to the database.`[HttpPost("/api/todos")]` indicates this method will be called for `POST` requests made to `/api/todos`. `[FromBody]` indicates the `todo` parameter will be read from the request body as JSON.
 
     Once the changes are saved, the method responds with the successful `204` HTTP status code and an empty response body.
 
@@ -184,47 +184,41 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 ![image](https://user-images.githubusercontent.com/2546640/75119637-bc056a80-5652-11ea-81c8-71ea13d97a3c.png)
 
 ## Changing the state of todo items
-1. In `Program.cs`, create another method called `UpdateCompleted` inside of the `Program` class:
+1. In `Program.cs`, create another local method called `UpdateCompleted` below `CreateTodo`:
     ```C#
-    static async Task UpdateCompleted(HttpContext http)
+    [HttpPost("/api/todos/{id}")]
+    async Task<StatusCodeResult> UpdateCompleted(
+        [FromRoute] int id,
+        [FromBody] TodoItem inputTodo)
     {
-        if (!http.Request.RouteValues.TryGet("id", out int id))
-        {
-            http.Response.StatusCode = 400;
-            return;
-        }
-
         using var db = new TodoDbContext();
         var todo = await db.Todos.FindAsync(id);
 
-        if (todo == null)
+        if (todo is null)
         {
-            http.Response.StatusCode = 404;
-            return;
+            return new StatusCodeResult(404);
         }
 
-        var inputTodo = await http.Request.ReadJsonAsync<TodoItem>();
         todo.IsComplete = inputTodo.IsComplete;
 
         await db.SaveChangesAsync();
 
-        http.Response.StatusCode = 204;
+        return new StatusCodeResult(204);
     }
     ```
 
-    The above logic retrieves the id from the route parameter "id" and uses it to find the todo item in the database. It then reads the JSON payload from the incoming request, sets the `IsComplete` property and updates the todo item in the database.
-1. Wire up `UpdateCompleted` to the `api/todos/{id}` route by modifying the code in `Main` to the following:
+    `[FromRoute]` indicates the `int id` method parameter will be populated from the route parameter of the same name (the `{id}` in `/api/todos/{id}`).
+
+    The body of the method uses the id to find the todo item in the database. It then updates it the `TodoItem.IsComplete` property to match the uploaded JSON todo and saves it back to the database.
+
+1. Wire up `UpdateCompleted` route by modifying the code in `Program.cs` to the following:
+
     ```C#
-    static async Task Main(string[] args)
-    {
-        var app = WebApplication.Create(args);
+    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
+    app.MapAction((Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
 
-        app.MapGet("/api/todos", GetTodos);
-        app.MapPost("/api/todos", CreateTodo);
-        app.MapPost("/api/todos/{id}", UpdateCompleted);
-
-        await app.RunAsync();
-    }
+    await app.RunAsync();
     ```
 
 ## Deleting a todo item
