@@ -9,7 +9,7 @@
 # Prerequisites
 
 !!! REVIEW: This installer page is far scarier than https://dotnet.microsoft.com/download. How do we deal with this?
-1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/4238b45156dad3c9a64a465d7e3aab2c037200d5#installers-and-binaries)
+1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/ce39a16e290c524e5d5c3eed806475a46df5125d#installers-and-binaries)
 1. Install [Node.js](https://nodejs.org/en/)
 
 # Setup
@@ -20,13 +20,13 @@
     ```
     This will make the `FeatherHttp` templates available in the `dotnet new` command (more below).
 
-1. Download this [repository](https://github.com/featherhttp/tutorial/archive/master.zip). Unzip it, and navigate to the Tutorial folder, this consists of the frontend application `TodoReact` app.
+1. Download this [repository](https://github.com/halter73/tutorial/archive/halter73/mapaction.zip). Unzip it, and navigate to the Tutorial folder, this consists of the frontend application `TodoReact` app.
    > If using [Visual Studio Code](https://code.visualstudio.com/), install the [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) for C# support.
 
 **Task**:  Build the backend portion using FeatherHttp
 -------------------------------------------------------
 ## Tasks
-**Please Note: The completed exercise is available in the [samples folder](https://github.com/featherhttp/tutorial/tree/master/Sample). Feel free to reference it at any point during the tutorial.**
+**Please Note: The completed exercise is available in the [samples folder](https://github.com/halter73/tutorial/tree/halter73/mapaction/Sample). Feel free to reference it at any point during the tutorial.**
 ###  Run the frontend application
 
 1. Once you clone the Todo repo, navigate to the `TodoReact` folder inside of the `Tutorial` folder and run the following commands 
@@ -129,10 +129,9 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 
     This will import the required namespaces so that the application compiles successfully.
 
-1. Above `await app.RunAsync();`, create a local method called `GetTodos` inside of the `Program.cs` file:
+1. Above `await app.RunAsync();`, create a top-level method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
-    [HttpGet("/api/todos")]
     async Task<List<TodoItem>> GetTodos()
     {
         using var db = new TodoDbContext();
@@ -140,12 +139,14 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response. `[HttpGet("/api/todos")]` indicates this method will be called for `GET` requests made to `/api/todos`.
+    This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response.
     
-1. Wire up `GetTodos` by calling `MapAction` with the `GetTodos` method before calling `await app.RunAsync();`:
+1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet` before the existing call to `await app.RunAsync();`:
 
     ```C#
-    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
+
+    await app.RunAsync();
     ```
 
 1. Navigate to the URL http://localhost:5000/api/todos in the browser. It should return an empty JSON array.
@@ -154,10 +155,9 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 
 ## Adding a new todo item
 
-1. In `Program.cs`, create another local method called `CreateTodo` inside of the `Program` class:
+1. In `Program.cs`, create another top-level method called `CreateTodo`:
 
     ```C#
-    [HttpPost("/api/todos")]
     async Task<StatusCodeResult> CreateTodo([FromBody] TodoItem todo)
     {
         using var db = new TodoDbContext();
@@ -168,14 +168,15 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    The above method reads the `TodoItem` from the incoming HTTP request and adds it to the database.`[HttpPost("/api/todos")]` indicates this method will be called for `POST` requests made to `/api/todos`. `[FromBody]` indicates the `todo` parameter will be read from the request body as JSON.
+    The above method reads the `TodoItem` from the incoming HTTP request and adds it to the database. `[FromBody]` indicates the `todo` parameter will be read from the request body as JSON.
 
     Once the changes are saved, the method responds with the successful `204` HTTP status code and an empty response body.
 
-1. Wire up `CreateTodo` to the `api/todos` route by modifying the code in `Main` to the following:
+1. Wire up `CreateTodo` to the `api/todos` route with `MapPost`:
+
     ```C#
-    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
-    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
+    app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);;
 
     await app.RunAsync();
     ```
@@ -186,7 +187,6 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 ## Changing the state of todo items
 1. In `Program.cs`, create another local method called `UpdateCompleted` below `CreateTodo`:
     ```C#
-    [HttpPost("/api/todos/{id}")]
     async Task<StatusCodeResult> UpdateCompleted(
         [FromRoute] int id,
         [FromBody] TodoItem inputTodo)
@@ -207,16 +207,16 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    `[FromRoute]` indicates the `int id` method parameter will be populated from the route parameter of the same name (the `{id}` in `/api/todos/{id}`).
+    `[FromRoute]` indicates the `int id` method parameter will be populated from the route parameter of the same name (the `{id}` in `/api/todos/{id}` below).
 
     The body of the method uses the id to find the todo item in the database. It then updates it the `TodoItem.IsComplete` property to match the uploaded JSON todo and saves it back to the database.
 
-1. Wire up `UpdateCompleted` route by modifying the code in `Program.cs` to the following:
+1. Wire up `UpdateCompleted` to the `api/todos/{id}` route with `MapPost`:
 
     ```C#
-    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
-    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
-    app.MapAction((Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
+    app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
+    app.MapPost("/api/todos/{id}", (Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
 
     await app.RunAsync();
     ```
@@ -226,7 +226,6 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 1. In `Program.cs` create another local method called `DeleteTodo`:
 
     ```C#
-    [HttpDelete("/api/todos/{id}")]
     async Task<StatusCodeResult> DeleteTodo([FromRoute] int id)
     {
         using var db = new TodoDbContext();
@@ -244,20 +243,19 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     }
     ```
 
-    The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it. `[HttpDelete("/api/todos/{id}")]` indicates this method will be called for `DELETE` requests made to `/api/todos/<SOME_INT>`.
+    The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it.
 
-1. Wire up `DeleteTodo` by modifying the code in `Program.cs` to the following:
+1. Wire up `DeleteTodo` to the `/api/todos/{id}` route with `MapDelete`:
     ```C#
-    app.MapAction((Func<Task<List<TodoItem>>>)GetTodos);
-    app.MapAction((Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
-    app.MapAction((Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
-    app.MapAction((Func<int, Task<StatusCodeResult>>)DeleteTodo);
+    app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
+    app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
+    app.MapPost("/api/todos/{id}", (Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
+    app.MapDelete("/api/todos/{id}", (Func<int, Task<StatusCodeResult>>)DeleteTodo);
 
-    await app.RunAsync()
+    await app.RunAsync();
     ```
 
 ## Test the application
 
 The application should now be fully functional. 
 ![image](https://user-images.githubusercontent.com/2546640/75119891-08ea4080-5655-11ea-96be-adab4990ad65.png)
-
