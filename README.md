@@ -1,81 +1,93 @@
 # Tutorial
 
-**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App.  The user will be exploring the functionality of  FeatherHttp, a server-side framework. 
+**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App.  The user will be exploring the functionality of Houdini, a server-side framework.
 
-**What is FeatherHttp**: FeatherHttp makes it **easy** to write web applications.  
+**What is Houdini**: Houdini makes it **easy** to write web applications.  
 
-**Why FeatherHttp**: FeatherHttp is lightweight server-side framework designed to scale-up as your application grows in complexity. 
+**Why Houdini**: Houdini is lightweight server-side framework designed to scale-up as your application grows in complexity. 
 
-# Prerequisites
+## Prerequisites
 
-!!! REVIEW: This installer page is far scarier than https://dotnet.microsoft.com/download. How do we deal with this?
 1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/ce39a16e290c524e5d5c3eed806475a46df5125d#installers-and-binaries)
 1. Install [Node.js](https://nodejs.org/en/)
 
-# Setup
+## Setup
 
-1. Install the FeatherHttp template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
-    ```
-    dotnet new -i FeatherHttp.Templates::0.1.*-* --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
-    ```
-    This will make the `FeatherHttp` templates available in the `dotnet new` command (more below).
+Download this [repository](https://github.com/halter73/tutorial/archive/halter73/mapaction.zip). Unzip it, and navigate to the Tutorial folder which contains the `TodoReact` frontend application.
 
-1. Download this [repository](https://github.com/halter73/tutorial/archive/halter73/mapaction.zip). Unzip it, and navigate to the Tutorial folder, this consists of the frontend application `TodoReact` app.
    > If using [Visual Studio Code](https://code.visualstudio.com/), install the [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) for C# support.
 
-**Task**:  Build the backend portion using FeatherHttp
--------------------------------------------------------
-## Tasks
+
 **Please Note: The completed exercise is available in the [samples folder](https://github.com/halter73/tutorial/tree/halter73/mapaction/Sample). Feel free to reference it at any point during the tutorial.**
-###  Run the frontend application
+
+## Tasks
+
+### Run the frontend application
 
 1. Once you clone the Todo repo, navigate to the `TodoReact` folder inside of the `Tutorial` folder and run the following commands 
-```
-TodoReact> npm i 
-TodoReact> npm start
-```
-- The commands above
-    - Restores packages `npm i `
-    - Starts the react app `npm start`
+
+    ```
+    TodoReact> npm i 
+    TodoReact> npm start
+    ```
+
+    - The commands above
+        - Restores packages `npm i `
+        - Starts the react app `npm start`
+
 1. The app will load but have no functionality
-![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
+
+    ![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
 
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
-### Build backend - FeatherHttp
-**Create a new project**
+### Build backend - Houdini
+
+#### Create a new project
+
+1. Open a new shell inside of the `Tutorial` folder.
+
+1. Install the FeatherHttp template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
+
+    ```
+    Tutorial> dotnet new -i FeatherHttp.Templates::0.1.*-* --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
+    ```
+
+    This will make the `FeatherHttp` templates available in the `dotnet new` command.
+
 
 1. Create a new FeatherHttp application and add the necessary packages in the `TodoApi` folder.
 
-```
-Tutorial> dotnet new feather -n TodoApi
-```
+    ```
+    Tutorial> dotnet new feather -n TodoApi
+    ```
 
-2. Open the `TodoApi` Folder in the editor of your choice.
+1. Open the `TodoApi` Folder in the editor of your choice.
 
-3. Open `TodoApi.csproj` in the editor and add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources`.
+1. Open `TodoApi.csproj` in the editor and add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources`.
 
-```xml
-<RestoreSources>
-    $(RestoreSources);
-    https://api.nuget.org/v3/index.json;
-    https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;
-    https://f.feedz.io/featherhttp/framework/nuget/index.json
-</RestoreSources>
-```
+    ```xml
+    <RestoreSources>
+        $(RestoreSources);
+        https://api.nuget.org/v3/index.json;
+        https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;
+        https://f.feedz.io/featherhttp/framework/nuget/index.json
+    </RestoreSources>
+    ```
 
-4. Add a preview NuGet package (`Microsoft.EntityFrameworkCore.InMemory`) required in the next section.
+1. Add a preview NuGet package (`Microsoft.EntityFrameworkCore.InMemory`) required for the next section.
 
-```
-Tutorial> cd TodoApi
-TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
-```
+    ```
+    Tutorial> cd TodoApi
+    TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
+    ```
 
-## Create the database model
+#### Create the database model
 
 1. Create a file called  `TodoItem.cs` in the TodoApi folder. Add the content below:
-   ```C#
-   using System.Text.Json.Serialization;
+
+    ```C#
+    using System.Text.Json.Serialization;
 
     public class TodoItem
     {
@@ -88,9 +100,11 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
         [JsonPropertyName("isComplete")]
         public bool IsComplete { get; set; }
     }
-   ```
+    ```
+
    The above model will be used for reading in JSON and storing todo items into the database.
 1. Create a file called `TodoDbContext.cs` with the following contents:
+
     ```C#
     using Microsoft.EntityFrameworkCore;
 
@@ -104,17 +118,20 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
         }
     }
     ```
+
     This code does 2 things:
      - It exposes a `Todos` property which represents the list of todo items in the database.
      - The call to `UseInMemoryDatabase` wires up the in memory database storage. Data will only be persisted as long as the application is running.
+
 1. Now we're going to use `dotnet watch` to run the server side application:
+
     ```
-    dotnet watch run
+    TodoApi> dotnet watch run
     ```
 
-    This will watch our application for source code changes and will restart the process as a result.
+    > This will watch our application for source code changes and will restart the process as a result.
 
-## Expose the list of todo items
+#### Expose the list of todo items
 
 1. Add the appropriate `usings` to the top of the `Program.cs` file.
 
@@ -153,7 +170,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 
     <img src="https://user-images.githubusercontent.com/2546640/75116317-1a235500-5635-11ea-9a73-e6fc30639865.png" alt="empty json array" style="text-align:center" width =70% />
 
-## Adding a new todo item
+#### Adding a new todo item
 
 1. In `Program.cs`, create another top-level method called `CreateTodo`:
 
@@ -184,7 +201,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
 1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. The application should be able to add new todo items. Also, refreshing the page should show the stored todo items.
 ![image](https://user-images.githubusercontent.com/2546640/75119637-bc056a80-5652-11ea-81c8-71ea13d97a3c.png)
 
-## Changing the state of todo items
+#### Changing the state of todo items
 1. In `Program.cs`, create another local method called `UpdateCompleted` below `CreateTodo`:
     ```C#
     async Task<StatusCodeResult> UpdateCompleted(
@@ -221,7 +238,7 @@ TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
     await app.RunAsync();
     ```
 
-## Deleting a todo item
+#### Deleting a todo item
 
 1. In `Program.cs` create another local method called `DeleteTodo`:
 
