@@ -8,7 +8,7 @@
 
 ## Prerequisites
 
-1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/ce39a16e290c524e5d5c3eed806475a46df5125d#installers-and-binaries)
+1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/7c91bd82ab5dcc208886fd55f9cfaa0c385dddcb#installers-and-binaries) (TODO: Create friendlier download page.)
 1. Install [Node.js](https://nodejs.org/en/)
 
 ## Setup
