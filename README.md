@@ -161,7 +161,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
     ```
 
     This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response.
-    
+
 1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet` before the existing call to `await app.RunAsync();`:
 
     ```C#
@@ -206,7 +206,9 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 ![image](https://user-images.githubusercontent.com/2546640/75119637-bc056a80-5652-11ea-81c8-71ea13d97a3c.png)
 
 #### Changing the state of todo items
+
 1. In `Program.cs`, create another local method called `UpdateCompleted` below `CreateTodo`:
+
     ```C#
     async Task<StatusCodeResult> UpdateCompleted(
         [FromRoute] int id,
@@ -267,6 +269,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
     The above logic is very similar to `UpdateCompleted` but instead. it removes the todo item from the database after finding it.
 
 1. Wire up `DeleteTodo` to the `/api/todos/{id}` route with `MapDelete`:
+
     ```C#
     app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
     app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
