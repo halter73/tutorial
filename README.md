@@ -9,7 +9,7 @@
 ## Prerequisites
 
 1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/7c91bd82ab5dcc208886fd55f9cfaa0c385dddcb#installers-and-binaries) (TODO: Create friendlier download page.)
-1. Install [Node.js](https://nodejs.org/en/)
+1. Install [Node.js](https://nodejs.org/en/) 14 or later.
 
 ## Setup
 
@@ -39,6 +39,8 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
     ![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
 
+    > `Proxy error: Could not proxy request /api/todos from localhost:3000 to http://localhost:5000/` is expected.
+
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
 ### Build backend - Houdini
@@ -64,14 +66,16 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 1. Open the `TodoApi` Folder in the editor of your choice.
 
-1. Open `TodoApi.csproj` in the editor and add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources`.
+1. Open `TodoApi.csproj` in the editor and update `<TargetFramework>net5.0</TargetFramework>` to `<TargetFramework>net6.0</TargetFramework>`.
+
+1. Also add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources` section of `TodoApi.csproj`.
 
     ```xml
     <RestoreSources>
         $(RestoreSources);
         https://api.nuget.org/v3/index.json;
         https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;
-        https://f.feedz.io/featherhttp/framework/nuget/index.json
+        https://f.feedz.io/featherhttp/framework/nuget/index.json;
     </RestoreSources>
     ```
 
