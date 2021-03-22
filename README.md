@@ -1,10 +1,8 @@
 # Tutorial
 
-**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App.  The user will be exploring the functionality of Houdini, a server-side framework.
+**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App. The user will be exploring minimal hosting and routing APIs for writing this backend.
 
-**What is Houdini**: Houdini makes it **easy** to write web applications.  
-
-**Why Houdini**: Houdini is lightweight server-side framework designed to scale-up as your application grows in complexity. 
+**What is minimal hosting and routing?**: Minimal hosting and routing APIs make it **easy** to write web applications.  
 
 ## Prerequisites
 
@@ -43,50 +41,31 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
-### Build backend - Houdini
+### Build backend
 
 #### Create a new project
 
 1. Open a new shell inside of the `Tutorial` folder.
 
-1. Install the FeatherHttp template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
+1. Install the MinimalHost template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
 
     ```
-    Tutorial> dotnet new -i FeatherHttp.Templates::0.1.*-* --nuget-source https://f.feedz.io/featherhttp/framework/nuget/index.json
+    Tutorial> dotnet new -i MinimalHost.Templates::0.1.*-* --nuget-source https://f.feedz.io/minimal/tutorial/nuget/index.json
     ```
 
-    This will make the `FeatherHttp` templates available in the `dotnet new` command.
+    This will make the `MinimalHost` templates available in the `dotnet new` command.
 
 
-1. Create a new FeatherHttp application and add the necessary packages in the `TodoApi` folder.
-
-    ```
-    Tutorial> dotnet new feather -n TodoApi
-    ```
-
-1. Open the `TodoApi` Folder in the editor of your choice.
-
-1. Open `TodoApi.csproj` in the editor and update `<TargetFramework>net5.0</TargetFramework>` to `<TargetFramework>net6.0</TargetFramework>`.
-
-1. Also add `https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;` to the `RestoreSources` section of `TodoApi.csproj`.
-
-    ```xml
-    <RestoreSources>
-        $(RestoreSources);
-        https://api.nuget.org/v3/index.json;
-        https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet6/nuget/v3/index.json;
-        https://f.feedz.io/featherhttp/framework/nuget/index.json;
-    </RestoreSources>
-    ```
-
-1. Add a preview NuGet package (`Microsoft.EntityFrameworkCore.InMemory`) required for the next section.
+1. Create a new MinimalHost application and add the necessary packages in the `TodoApi` folder.
 
     ```
-    Tutorial> cd TodoApi
-    TodoApi> dotnet add package Microsoft.EntityFrameworkCore.InMemory -v 6.0.*-*
+    Tutorial> dotnet new minimalhost -n TodoApi
     ```
 
 #### Create the database model
+
+1. Open the `TodoApi` Folder in the editor of your choice.
+
 
 1. Create a file called  `TodoItem.cs` in the TodoApi folder. Add the content below:
 

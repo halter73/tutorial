@@ -60,4 +60,7 @@ app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
 app.MapPost("/api/todos/{id}", (Func<int, TodoItem, Task<StatusCodeResult>>)UpdateCompleted);
 app.MapDelete("/api/todos/{id}", (Func<int, Task<StatusCodeResult>>)DeleteTodo);
 
+string HelloWorld() => "Hello World!";
+app.MapGet("/", (Func<string>)HelloWorld);
+
 await app.RunAsync();
