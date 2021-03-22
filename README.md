@@ -116,19 +116,6 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 #### Expose the list of todo items
 
-1. Add the appropriate `usings` to the top of the `Program.cs` file.
-
-    ```C#
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Builder;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    ```
-
-    This will import the required namespaces so that the application compiles successfully.
-
 1. Above `await app.RunAsync();`, create a top-level method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
