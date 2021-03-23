@@ -2,7 +2,8 @@
 
 **Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App. The user will be exploring minimal hosting and routing APIs for writing this backend.
 
-**What is the minimal?**: Minimal is new way to build hosting and routing APIs make it **easy** to write web applications.  
+**What is ------ ?**: Minimal is makes it **easy** to write web applications.  
+**Why ------** Minimal is new way to build hosting and routing APIs make it **easy** to write web applications. 
 
 ## Prerequisites
 
@@ -43,7 +44,7 @@
 
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
-### Build backend
+### Build the backend
 
 #### Create a new minimal project
 
