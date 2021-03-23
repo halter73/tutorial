@@ -133,7 +133,7 @@
 
     This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response.
 
-1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet`. This will happening before `await app.RunAsync();`:
+1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet`. This should go before `await app.RunAsync();`:
 
     ```C#
     app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
