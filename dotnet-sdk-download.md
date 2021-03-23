@@ -23,4 +23,4 @@ These preview installers are *unsigned*. You might need to click through a few "
 
 ## Other
 
-The left-hand "Master (6.0.x Runtime)" column on the [nightly .NET6 installer](https://github.com/dotnet/installer/tree/7c91bd82ab5dcc208886fd55f9cfaa0c385dddcb#installers-and-binaries) page might have what you're looking for. Try to use one of the installers linked above if possible.
+The left-hand "Master (6.0.x Runtime)" column on the [nightly .NET 6 installer](https://github.com/dotnet/installer/tree/ac4c32f65341243aa522488942ec36267b959c39#installers-and-binaries) page might have what you're looking for. Try to use one of the installers linked above if possible.
