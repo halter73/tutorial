@@ -173,7 +173,7 @@
     await app.RunAsync();
     ```
 
-1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. Now, you will able to add new items. Refresh the TodoApi on http://localhost:5000 the page should show the stored todo items.
+1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. Now, you will able to add new items. Behind the scenes when a new item is added, the `TodoReact` application makes a POST request to http://localhost:5000/api/todos which calls `CreateTodo` and stores the todo item in memory on the server. When the `TodoReact` application is refreshed, it makes a GET request to http://localhost:5000/api/todos calling `GetTodos` which should now return a non-empty JSON array containing the newly added items.
 ![create](https://user-images.githubusercontent.com/2546640/112079312-52f26e00-8b56-11eb-8aa0-ba56c91174f6.gif)
 
 #### Changing the state of todo items
