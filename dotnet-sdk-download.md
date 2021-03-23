@@ -2,7 +2,7 @@
 
 ## Notice!
 
-These preview installers are *unsigned*. You might need to click through a few "advanced" dialogues to convince your OS to run unsigned code.
+These preview installers are *unsigned*. You might need to click through a few "advanced" dialog boxes to convince your OS to run unsigned code.
 
 ## Windows
 
