@@ -1,12 +1,12 @@
 # Tutorial
 
-**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App. The user will be exploring minimal hosting and routing APIs for writing this backend.
+**Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App. The user will be exploring minimal hosting and routing APIs for writing this backend in .NET.
 
-**What is the minimalism?**: Minimalism is new way to build minimal hosting and routing APIs make it **easy** to write web applications.  
 
 ## Prerequisites
 
-1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/7c91bd82ab5dcc208886fd55f9cfaa0c385dddcb#installers-and-binaries) (TODO: Create friendlier download page.)
+1. Install [.NET Core 6.0 preview](https://github.com/halter73/tutorial/blob/halter73/mapaction/dotnet-sdk-download.md) 
+
 1. Install [Node.js](https://nodejs.org/en/) 14 or later.
 
 ## Setup
@@ -43,9 +43,9 @@
 
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
-### Build backend
+### Build the backend
 
-#### Create a new minimal project
+#### Create a new project
 
 1. Open a new terminal navigate to the `Tutorial` folder.
 
@@ -133,7 +133,7 @@
 
     This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response.
 
-1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet`. This will happening before `await app.RunAsync();`:
+1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet`. This should go before `await app.RunAsync();`:
 
     ```C#
     app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
@@ -173,7 +173,7 @@
     await app.RunAsync();
     ```
 
-1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. Now, you will able to add new items. Refresh the TodoApi on http://localhost:5000 the page should show the stored todo items.
+1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. Now, you will able to add new items. Behind the scenes when a new item is added, the `TodoReact` application makes a POST request to http://localhost:5000/api/todos which calls `CreateTodo` and stores the todo item in memory on the server. When the `TodoReact` application is refreshed, it makes a GET request to http://localhost:5000/api/todos calling `GetTodos` which should now return a non-empty JSON array containing the newly added items.
 ![create](https://user-images.githubusercontent.com/2546640/112079312-52f26e00-8b56-11eb-8aa0-ba56c91174f6.gif)
 
 #### Changing the state of todo items
