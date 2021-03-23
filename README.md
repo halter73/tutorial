@@ -2,7 +2,7 @@
 
 **Goal**: In this exercise, the participants will be asked to build the backend of a TodoReact App. The user will be exploring minimal hosting and routing APIs for writing this backend.
 
-**What is minimal hosting and routing?**: Minimal hosting and routing APIs make it **easy** to write web applications.  
+**What is the minimalism?**: Minimalism is new way to build minimal hosting and routing APIs make it **easy** to write web applications.  
 
 ## Prerequisites
 
@@ -11,7 +11,7 @@
 
 ## Setup
 
-Download this [repository](https://github.com/halter73/tutorial/archive/halter73/mapaction.zip). Unzip it, and navigate to the Tutorial folder which contains the `TodoReact` frontend application.
+[Download](https://github.com/halter73/tutorial/archive/halter73/mapaction.zip) or clone this repository. Unzip it, and navigate to the Tutorial folder which contains the `TodoReact` frontend application.
 
    > If using [Visual Studio Code](https://code.visualstudio.com/), install the [C# extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.csharp) for C# support.
 
@@ -39,13 +39,15 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
     > `Proxy error: Could not proxy request /api/todos from localhost:3000 to http://localhost:5000/` is expected.
 
+    ![proxyerror](https://user-images.githubusercontent.com/2546640/112073462-8929f080-8b4a-11eb-872d-843528103380.gif)
+
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
 ### Build backend
 
-#### Create a new project
+#### Create a new minimal project
 
-1. Open a new shell inside of the `Tutorial` folder.
+1. Open a new terminal navigate to the `Tutorial` folder.
 
 1. Install the MinimalHost template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
 
@@ -54,6 +56,8 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
     ```
 
     This will make the `MinimalHost` templates available in the `dotnet new` command.
+    ![template](https://user-images.githubusercontent.com/2546640/112074057-c04cd180-8b4b-11eb-8aee-4dc2e0fc344a.gif)
+
 
 
 1. Create a new MinimalHost application and add the necessary packages in the `TodoApi` folder.
@@ -104,7 +108,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
     This code does 2 things:
      - It exposes a `Todos` property which represents the list of todo items in the database.
-     - The call to `UseInMemoryDatabase` wires up the in memory database storage. Data will only be persisted as long as the application is running.
+     - The call to `UseInMemoryDatabase` wires up the in memory database storage. Data will only be persisted/stored as long as the application is running.
 
 1. Now we're going to use `dotnet watch` to run the server side application:
 
@@ -116,19 +120,20 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 #### Expose the list of todo items
 
-1. Above `await app.RunAsync();`, create a top-level method called `GetTodos` inside of the `Program.cs` file:
+1. Above `await app.RunAsync();`, create a method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
-    async Task<List<TodoItem>> GetTodos()
-    {
-        using var db = new TodoDbContext();
-        return await db.Todos.ToListAsync();
+   async Task<List<TodoItem>> GetTodos()
+   {
+       using var db = new TodoDbContext();
+       return await db.Todos.ToListAsync();
     }
+    await app.RunAsync();
     ```
 
     This method gets the list of todo items from the database and returns it. Returned values are written as JSON to the HTTP response.
 
-1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet` before the existing call to `await app.RunAsync();`:
+1. Wire up `GetTodos` to the `api/todos` route by calling `MapGet`. This will happening before `await app.RunAsync();`:
 
     ```C#
     app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
@@ -142,7 +147,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 #### Adding a new todo item
 
-1. In `Program.cs`, create another top-level method called `CreateTodo`:
+1. In `Program.cs`, create another method called `CreateTodo`:
 
     ```C#
     async Task<StatusCodeResult> CreateTodo([FromBody] TodoItem todo)
@@ -163,17 +168,17 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
     ```C#
     app.MapGet("/api/todos", (Func<Task<List<TodoItem>>>)GetTodos);
-    app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);;
+    app.MapPost("/api/todos", (Func<TodoItem, Task<StatusCodeResult>>)CreateTodo);
 
     await app.RunAsync();
     ```
 
-1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. The application should be able to add new todo items. Also, refreshing the page should show the stored todo items.
-![image](https://user-images.githubusercontent.com/2546640/75119637-bc056a80-5652-11ea-81c8-71ea13d97a3c.png)
+1. Navigate to the `TodoReact` application which should be running on http://localhost:3000. Now, you will able to add new items. Refresh the TodoApi on http://localhost:5000 the page should show the stored todo items.
+![create](https://user-images.githubusercontent.com/2546640/112079312-52f26e00-8b56-11eb-8aa0-ba56c91174f6.gif)
 
 #### Changing the state of todo items
 
-1. In `Program.cs`, create another local method called `UpdateCompleted` below `CreateTodo`:
+1. In `Program.cs`, create another method called `UpdateCompleted` below `CreateTodo`:
 
     ```C#
     async Task<StatusCodeResult> UpdateCompleted(
@@ -212,7 +217,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 #### Deleting a todo item
 
-1. In `Program.cs` create another local method called `DeleteTodo`:
+1. In `Program.cs` create another method called `DeleteTodo`:
 
     ```C#
     async Task<StatusCodeResult> DeleteTodo([FromRoute] int id)
@@ -248,4 +253,4 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 ## Test the application
 
 The application should now be fully functional. 
-![image](https://user-images.githubusercontent.com/2546640/75119891-08ea4080-5655-11ea-96be-adab4990ad65.png)
+![Complete](https://user-images.githubusercontent.com/2546640/112080532-8d5d0a80-8b58-11eb-9c46-a6cb9c084bb7.gif)
