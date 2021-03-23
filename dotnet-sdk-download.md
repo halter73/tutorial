@@ -18,7 +18,7 @@ These preview installers are *unsigned*. You might need to click through a few "
 ## Linux
 
 1. [Linux x64 deb installer](https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.100-preview.3.21173.4/dotnet-sdk-6.0.100-preview.3.21173.4-x64.deb)
-1. [Linux x64 rmp insaller](https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.100-preview.3.21173.4/dotnet-sdk-6.0.100-preview.3.21173.4-x64.rpm)
+1. [Linux x64 rpm installer](https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.100-preview.3.21173.4/dotnet-sdk-6.0.100-preview.3.21173.4-x64.rpm)
 1. [Linux arm64 tarball](https://dotnetcli.azureedge.net/dotnet/Sdk/6.0.100-preview.3.21173.4/dotnet-sdk-6.0.100-preview.3.21173.4-linux-arm64.tar.gz)
 
 ## Other
