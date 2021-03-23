@@ -6,7 +6,7 @@
 
 ## Prerequisites
 
-1. Install [.NET Core 6.0 preview](https://github.com/dotnet/installer/tree/7c91bd82ab5dcc208886fd55f9cfaa0c385dddcb#installers-and-binaries) (TODO: Create friendlier download page.)
+1. Install [.NET Core 6.0 preview](dotnet-sdk-download.md).
 1. Install [Node.js](https://nodejs.org/en/) 14 or later.
 
 ## Setup
@@ -22,7 +22,7 @@ Download this [repository](https://github.com/halter73/tutorial/archive/halter73
 
 ### Run the frontend application
 
-1. Once you clone the Todo repo, navigate to the `TodoReact` folder inside of the `Tutorial` folder and run the following commands 
+1. Once you clone the Todo repo, navigate to the `TodoReact` folder inside of the `Tutorial` folder and run the following commands:
 
     ```
     TodoReact> npm i 
