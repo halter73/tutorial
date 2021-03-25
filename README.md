@@ -32,13 +32,11 @@
     - The commands above
         - Restores packages `npm i `
         - Starts the react app `npm start`
-
-1. The app will load but have no functionality
-
-    ![proxyerror](https://user-images.githubusercontent.com/2546640/112073462-8929f080-8b4a-11eb-872d-843528103380.gif)
+ ![proxyerror](https://user-images.githubusercontent.com/2546640/112073462-8929f080-8b4a-11eb-872d-843528103380.gif)
 
     > `Proxy error: Could not proxy request /api/todos from localhost:3000 to http://localhost:5000/` is expected.
-   
+
+1. The app will load but have no functionality   
    
    ![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
     
