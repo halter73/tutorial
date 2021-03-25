@@ -35,12 +35,13 @@
 
 1. The app will load but have no functionality
 
-    ![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
-
-    > `Proxy error: Could not proxy request /api/todos from localhost:3000 to http://localhost:5000/` is expected.
-
     ![proxyerror](https://user-images.githubusercontent.com/2546640/112073462-8929f080-8b4a-11eb-872d-843528103380.gif)
 
+    > `Proxy error: Could not proxy request /api/todos from localhost:3000 to http://localhost:5000/` is expected.
+   
+   
+   ![image](https://user-images.githubusercontent.com/2546640/75070087-86307c80-54c0-11ea-8012-c78813f1dfd6.png)
+    
     > Keep this React app running as we'll need it once we build the back-end in the upcoming steps
 
 ### Build the backend
