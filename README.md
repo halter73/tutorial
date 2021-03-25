@@ -123,11 +123,12 @@
 1. Above `await app.RunAsync();`, create a method called `GetTodos` inside of the `Program.cs` file:
 
     ```C#
-   async Task<List<TodoItem>> GetTodos()
-   {
-       using var db = new TodoDbContext();
-       return await db.Todos.ToListAsync();
+    async Task<List<TodoItem>> GetTodos()
+    {
+        using var db = new TodoDbContext();
+        return await db.Todos.ToListAsync();
     }
+    
     await app.RunAsync();
     ```
 
