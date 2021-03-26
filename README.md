@@ -51,7 +51,7 @@
 1. Install the MinimalHost template using the `dotnet CLI`. Copy the command below into a terminal or command prompt to install the template.
 
     ```
-    Tutorial> dotnet new -i MinimalHost.Templates::0.1.*-* --nuget-source https://f.feedz.io/minimal/tutorial/nuget/index.json
+    Tutorial> dotnet new -i "MinimalHost.Templates::0.1.*-*" --nuget-source https://f.feedz.io/minimal/tutorial/nuget/index.json
     ```
 
     This will make the `MinimalHost` templates available in the `dotnet new` command.
