@@ -5,7 +5,7 @@
 
 ## Prerequisites
 
-1. Install [.NET Core 6.0 preview](dotnet-sdk-download.md).
+1. Install [.NET 6.0 preview](dotnet-sdk-download.md).
 
 1. Install [Node.js](https://nodejs.org/en/) 14 or later.
 
