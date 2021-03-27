@@ -1,4 +1,4 @@
-# .NET 6 Preview 6.0.100-preview.3.21173.3 installers
+# .NET 6.0.100-preview.3.21173.3 installers
 
 ## Notice!
 
